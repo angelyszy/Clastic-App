@@ -7,6 +7,8 @@ use App\Http\Controllers\DropOffController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\PickupController;
 use App\Http\Controllers\PointController;
+use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\ProfileController; // <-- Added
 
 // Redirect root to login or home
 Route::get('/', function () {
@@ -21,22 +23,31 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
-// Protected Routes
+// Protected Routes (require auth)
 Route::middleware('auth')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/missions', [MissionController::class, 'index'])->name('missions');
-    
-    Route::get('/dropoff', [DropOffController::class, 'index'])->name('dropoff');
-    Route::get('/dropoff/create', [DropOffController::class, 'create'])->name('dropoff.create');
-    Route::post('/dropoff', [DropOffController::class, 'store'])->name('dropoff.store');
-});
 
-Route::middleware('auth')->group(function () {
+    // Home
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // Scan / Classify
+    Route::get('/classify', [ClassificationController::class, 'index'])->name('classify');
+
+    // Pickup
     Route::get('/pickup', [PickupController::class, 'index'])->name('pickup');
     Route::get('/pickup/create', [PickupController::class, 'create'])->name('pickup.create');
     Route::post('/pickup', [PickupController::class, 'store'])->name('pickup.store');
-});
 
-Route::middleware('auth')->group(function () {
+    // Dropoff
+    Route::get('/dropoff', [DropOffController::class, 'index'])->name('dropoff');
+    Route::get('/dropoff/create', [DropOffController::class, 'create'])->name('dropoff.create');
+    Route::post('/dropoff', [DropOffController::class, 'store'])->name('dropoff.store');
+
+    // Point (NOT point.index → use 'points')
     Route::get('/points', [PointController::class, 'index'])->name('points');
+
+    // Missions
+    Route::get('/missions', [MissionController::class, 'index'])->name('missions');
+
+    // Profile (NEW)
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
