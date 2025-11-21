@@ -9,7 +9,8 @@ use App\Http\Controllers\PickupController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\StreakController;
-use App\Http\Controllers\ClassifyController;   
+use App\Http\Controllers\ClassifyController;  
+use App\Http\Controllers\ArticleController; 
 
 // Redirect root
 Route::get('/', function () {
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dropoff', [DropOffController::class, 'index'])->name('dropoff');
     Route::get('/dropoff/create', [DropOffController::class, 'create'])->name('dropoff.create');
     Route::post('/dropoff', [DropOffController::class, 'store'])->name('dropoff.store');
+
+    // Article
+    Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
 
     // Points
     Route::get('/points', [PointController::class, 'index'])->name('points');
