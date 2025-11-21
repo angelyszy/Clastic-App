@@ -7,16 +7,16 @@ use App\Http\Controllers\DropOffController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\PickupController;
 use App\Http\Controllers\PointController;
-use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\StreakController;
+use App\Http\Controllers\ClassifyController;   
 
-// Redirect root to login or home
+// Redirect root
 Route::get('/', function () {
     return Auth::check() ? redirect()->route('home') : redirect()->route('login');
 })->name('root');
 
-// Public Routes (Login, Register)
+// Public Routes
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
@@ -24,14 +24,14 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
-// Protected Routes (require auth)
+// Protected Routes
 Route::middleware('auth')->group(function () {
 
-    // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Scan / Classify
-    Route::get('/classify', [ClassificationController::class, 'index'])->name('classify');
+    // Plastic Classification
+    Route::get('/classify', [ClassifyController::class, 'index'])->name('classify');
+    Route::post('/classify', [ClassifyController::class, 'upload'])->name('classify.upload');
 
     // Pickup
     Route::get('/pickup', [PickupController::class, 'index'])->name('pickup');
@@ -43,19 +43,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dropoff/create', [DropOffController::class, 'create'])->name('dropoff.create');
     Route::post('/dropoff', [DropOffController::class, 'store'])->name('dropoff.store');
 
-    // Point 
+    // Points
     Route::get('/points', [PointController::class, 'index'])->name('points');
 
     // Missions
-    Route::middleware('auth')->group(function () {
     Route::get('/missions', [MissionController::class, 'index'])->name('missions');
-    });
 
-    // Profile 
+    // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
-    //Streak Tracker
-    Route::middleware('auth')->group(function () {
+    // Streak
     Route::get('/streak', [StreakController::class, 'index'])->name('streak');
-});
 });
