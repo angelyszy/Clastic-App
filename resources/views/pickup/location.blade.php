@@ -137,7 +137,7 @@
             position: absolute;
             top: calc(100% + 0.5rem);
             left: 0;
-            right: 0;
+            right: 60px;
             background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
@@ -193,12 +193,12 @@
             flex: 1;
             position: relative;
             padding: 0 1.5rem;
-            padding-bottom: 1rem;
+            padding-bottom: 0.5rem;
         }
 
         .map-container {
             width: 100%;
-            height: 400px;
+            height: 550px;
             border-radius: 16px;
             overflow: hidden;
             border: 2px solid #e2e8f0;
