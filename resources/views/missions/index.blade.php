@@ -26,15 +26,6 @@
             padding-bottom: 100px;
         }
 
-        /* Header */
-        .mission-header {
-            background: #7dd3c0;
-            color: #2d3748;
-            padding: 1rem 1.5rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
         /* Streak Section */
         .streak-section {
             text-align: center;
@@ -147,58 +138,18 @@
             font-weight: 600;
             color: #7dd3c0;
         }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: 480px;
-            width: 100%;
-            background: #4a9d8f;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-around;
-            border-radius: 30px 30px 0 0;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-
-        .nav-item {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.75rem;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        .nav-item.active {
-            opacity: 1;
-        }
-
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        @media (max-width: 480px) {
-            .mission-container {
-                max-width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="mission-container">
-        <!-- Header -->
-        <div class="mission-header">
-            Mission
-        </div>
+        
+<!-- Header -->
+<div style="background: linear-gradient(to right, #14b8a6, #0d9488); color: white; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+    <h1 style="font-size: 1.5rem; font-weight: bold; line-height: 1;">Mission</h1>
+  </div>
+  <p style="color: #ccfbf1; font-size: 0.875rem;">Keep the fire up for the better world!</p>
+</div>
 
         <!-- Streak Section -->
         <div class="streak-section">
@@ -248,41 +199,122 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="/" class="nav-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
-            <span>Home</span>
-        </a>
-        <a href="/classify" class="nav-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
-            </svg>
-            <span>Scan</span>
-        </a>
-        <a href="/pickup" class="nav-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                <path d="M12 6v6l4 2" stroke-width="2"/>
-            </svg>
-            <span>Pickup</span>
-        </a>
-        <a href="/missions" class="nav-item active">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke-width="2"/>
-            </svg>
-            <span>Mission</span>
-        </a>
-        <a href="/profile" class="nav-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
-                <circle cx="12" cy="7" r="4" stroke-width="2"/>
-            </svg>
-            <span>Profile</span>
-        </a>
-    </div>
+          <!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <a href="{{ route('home') }}" 
+       class="nav-item {{ Request::is('/') || Request::is('home') ? 'active' : '' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span>Home</span>
+    </a>
+
+    <a href="{{ route('articles.index') }}" 
+       class="nav-item {{ Request::is('articles*') ? 'active' : '' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h10" />
+        </svg>
+        <span>News</span>
+    </a>
+
+    <a href="{{ route('classify') }}" 
+       class="nav-item {{ Request::is('classify') ? 'active' : '' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+        </svg>
+        <span>Scan</span>
+    </a>
+
+    <a href="{{ route('missions') }}" 
+       class="nav-item {{ Request::is('missions') ? 'active' : '' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke-width="2"/>
+        </svg>
+        <span>Mission</span>
+    </a>
+
+    <a href="{{ route('profile') }}" 
+       class="nav-item {{ Request::is('profile') ? 'active' : '' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
+            <circle cx="12" cy="7" r="4" stroke-width="2"/>
+        </svg>
+        <span>Profile</span>
+    </a>
+</div>
+
+<style>
+.prose { line-height: 1.8; }
+.prose p { margin-bottom: 1rem; }
+
+.home-container {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: white;
+    padding-bottom: 100px;
+}
+
+/* BOTTOM NAVIGATION */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 480px;
+    width: 100%;
+    background: #4a9d8f;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    opacity: 0.75;
+    transition: all 0.25s ease;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+}
+
+.nav-item svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.nav-item.active {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+}
+
+/* Hover animation */
+.nav-item:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.15);
+}
+
+.nav-item:hover svg {
+    transform: scale(1.15);
+    color: #ffeb3b;
+}
+
+@media (max-width: 480px) {
+    .home-container { max-width: 100%; }
+}
+</style>
 
     <script>
         // Get streak from backend - replace 24 with dynamic value

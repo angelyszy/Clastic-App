@@ -2,6 +2,30 @@
 
 @section('content')
 <style>
+    /* Hilangkan navbar + padding bawah */
+    .fixed, [class*="bottom"], [class*="nav"] { display: none !important; }
+    body { padding-bottom: 0 !important; }
+
+    /* Background tetap hijau-biru sampai bawah */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to bottom, #7dd3c0, #4a9d8f);
+        z-index: -2;
+    }
+
+    /* Konten utama */
+    .schedule-container {
+        max-width: 480px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background: white;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Body umum */
     body {
         background: #f0f9f7;
         min-height: 100vh;
@@ -9,41 +33,42 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .schedule-container {
-        max-width: 480px;
-        margin: 0 auto;
-        min-height: 100vh;
-        background: white;
-    }
-
-    /* Header */
+    /* Header sama kayak style Clastic-App */
     .schedule-header {
-        background: #7dd3c0;
-        padding: 1rem 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+        background: linear-gradient(to right, #14b8a6, #0d9488);
         color: white;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .back-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0;
+    .schedule-header .flex {
         display: flex;
         align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .schedule-header a {
+        margin-right: 0.75rem;
+        color: white;
+        text-decoration: none;
+    }
+
+    .schedule-header svg {
+        width: 24px;
+        height: 24px;
     }
 
     .schedule-header h1 {
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 600;
+        font-size: 1.5rem;
+        font-weight: 700;
     }
 
-    /* Content */
+    .schedule-header p {
+        color: #ccfbf1;
+        font-size: 0.875rem;
+    }
+
+    /* Konten */
     .schedule-content {
         padding: 2rem 1.5rem;
     }
@@ -61,7 +86,7 @@
         margin-bottom: 1.5rem;
     }
 
-    /* Schedule Box */
+    /* Box jadwal */
     .schedule-box {
         background: white;
         border: 2px solid #e2e8f0;
@@ -77,46 +102,19 @@
         align-items: center;
     }
 
-    .day-label {
-        font-weight: 600;
-        color: #2d3748;
-    }
-
-    .time-slots {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .time-slot {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
+    .day-label { font-weight: 600; color: #2d3748; }
+    .time-slots { display: flex; flex-direction: column; gap: 0.5rem; }
+    .time-slot { display: flex; align-items: center; gap: 0.5rem; }
     .time-slot input[type="radio"] {
-        width: 18px;
-        height: 18px;
-        accent-color: #7dd3c0;
-        cursor: pointer;
+        width: 18px; height: 18px; accent-color: #14b8a6; cursor: pointer;
     }
+    .time-slot label { cursor: pointer; color: #4a5568; font-size: 0.95rem; }
+    .day-code { font-weight: 600; color: #7dd3c0; font-size: 0.9rem; }
 
-    .time-slot label {
-        cursor: pointer;
-        color: #4a5568;
-        font-size: 0.95rem;
-    }
-
-    .day-code {
-        font-weight: 600;
-        color: #7dd3c0;
-        font-size: 0.9rem;
-    }
-
-    /* Confirm Button */
+    /* Tombol confirm warna sama seperti header */
     .confirm-btn {
         width: 100%;
-        background: #7dd3c0;
+        background: linear-gradient(to right, #14b8a6, #0d9488);
         color: white;
         border: none;
         padding: 1rem;
@@ -124,39 +122,37 @@
         font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.3s;
+        transition: all 0.3s;
         margin-top: 2rem;
     }
 
-    .confirm-btn:hover {
-        background: #5eb3a6;
-    }
-
-    .confirm-btn:disabled {
-        background: #cbd5e0;
-        cursor: not-allowed;
-    }
+    .confirm-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .confirm-btn:disabled { background: #99f6e4; cursor: not-allowed; }
 
     @media (max-width: 480px) {
-        .schedule-container {
-            max-width: 100%;
-        }
+        .schedule-container { max-width: 100%; }
     }
 </style>
 
 <div class="schedule-container">
+
     <!-- Header -->
     <div class="schedule-header">
-        <button class="back-btn" onclick="window.history.back()">
-            ←
-        </button>
-        <h1>Order</h1>
+        <div class="flex items-center mb-2">
+            <a href="javascript:history.back()" class="mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <h1 class="text-2xl font-bold">Order</h1>
+        </div>
+        <p class="text-teal-100 text-sm">Determine your pickup schedule</p>
     </div>
 
-    <!-- Content -->
+    <!-- Konten -->
     <div class="schedule-content">
         <h2 class="section-title">Schedule</h2>
-        <p class="section-subtitle">Determine your pick up schedule</p>
+        <p class="section-subtitle">Choose your preferred time for collection</p>
 
         <div class="schedule-box">
             <div class="schedule-grid">
@@ -189,15 +185,13 @@
         const confirmBtn = document.getElementById('confirmBtn');
 
         radios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                confirmBtn.disabled = false;
-            });
+            radio.addEventListener('change', () => confirmBtn.disabled = false);
         });
 
         confirmBtn.addEventListener('click', function() {
-            const selectedTime = document.querySelector('input[name="schedule"]:checked');
-            if (selectedTime) {
-                sessionStorage.setItem('pickupSchedule', selectedTime.value);
+            const selected = document.querySelector('input[name="schedule"]:checked');
+            if (selected) {
+                sessionStorage.setItem('pickupSchedule', selected.value);
                 window.location.href = '/pickup/plastic-type';
             }
         });

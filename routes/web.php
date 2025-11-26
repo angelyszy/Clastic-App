@@ -65,4 +65,13 @@ Route::middleware('auth')->group(function () {
 
     // Streak
     Route::get('/streak', [StreakController::class, 'index'])->name('streak');
+
+    // Point Exchange
+   Route::get('/points/exchange', function () {
+    return view('point_exchanges.exchange');
+})->name('points.exchange');
+Route::get('/points/success', function () {
+    return view('point_exchanges.success');
+})->name('points.success');
+
 });

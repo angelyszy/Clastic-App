@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Transaction;
-use App\Models\PickupOrder;
-use App\Models\UserMission;
 
 class HomeController extends Controller
 {
@@ -18,23 +15,37 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        // Get user stats
+        // Default fallback supaya gak error
         $totalPoints = $user->points ?? 0;
 
-        $totalPlasticKg = Transaction::where('user_id', $user->id)
-            ->where('status', 'completed')
-            ->sum('weight') / 1000;
+        // Cek dulu apakah model Transaction ada
+        if (class_exists('\App\Models\Transaction')) {
+            $totalPlasticKg = \App\Models\Transaction::where('user_id', $user->id)
+                ->where('status', 'completed')
+                ->sum('weight') / 1000;
 
-        $completedMissions = $user->completedMissions()->count();
+            $recentTransactions = \App\Models\Transaction::where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+        } else {
+            $totalPlasticKg = 0;
+            $recentTransactions = collect();
+        }
 
-        $activePickups = PickupOrder::where('user_id', $user->id)
-            ->whereIn('status', ['pending', 'confirmed', 'on_the_way'])
-            ->count();
+        // Cek model PickupOrder
+        if (class_exists('\App\Models\PickupOrder')) {
+            $activePickups = \App\Models\PickupOrder::where('user_id', $user->id)
+                ->whereIn('status', ['pending', 'confirmed', 'on_the_way'])
+                ->count();
+        } else {
+            $activePickups = 0;
+        }
 
-        $recentTransactions = Transaction::where('user_id', $user->id)
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
+        // Cek relasi completedMissions
+        $completedMissions = method_exists($user, 'completedMissions')
+            ? $user->completedMissions()->count()
+            : 0;
 
         // Fun facts about recycling
         $funFacts = [
@@ -48,7 +59,7 @@ class HomeController extends Controller
             "Plastic bags are used for an average of 12 minutes but take 1,000 years to decompose.",
         ];
 
-        $todaysFunFact = $funFacts[date('z') % count($funFacts)]; // Different fact each day of year
+        $todaysFunFact = $funFacts[date('z') % count($funFacts)];
 
         return view('home', compact(
             'totalPoints',

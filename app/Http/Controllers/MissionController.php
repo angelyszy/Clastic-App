@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mission; 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MissionController extends Controller
 {
@@ -12,19 +11,24 @@ class MissionController extends Controller
     {
         $user = Auth::user();
 
-        // Fixed: Use relationship
-        $currentStreak = $user->completedMissions()->count();
+        // Hindari error kalau method belum ada di model User
+        $currentStreak = method_exists($user, 'completedMissions')
+            ? $user->completedMissions()->count()
+            : 0;
 
-        // Fixed: Use full namespace
-        $missions = Mission::active()->get();
+        // Hindari error kalau model Mission belum ada
+        if (class_exists('\App\Models\Mission')) {
+            $missions = \App\Models\Mission::all();
+        } else {
+            $missions = collect();
+        }
 
         return view('missions.index', compact('currentStreak', 'missions'));
     }
 
-    // Optional: Real streak logic later
     private function calculateStreak($userId)
     {
-        $activityDates = DB::table('transaction')
+        $activityDates = DB::table('transactions')
             ->where('user_id', $userId)
             ->selectRaw('DATE(created_at) as date')
             ->distinct()
